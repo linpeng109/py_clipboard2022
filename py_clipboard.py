@@ -8,7 +8,7 @@ import requests
 import py_pyperclip
 from py_config import ConfigFactory
 from py_logging import LoggerFactory
-
+from py_chrome import ChromClient
 # 剪贴板监听器
 
 
@@ -20,6 +20,7 @@ class ClipboardListen:
         self.ROBOTS = config.get('robots', 'keywords').split(';')
         self.ROBOT_URL = config.get('robots', 'robot_url')
         self.CHROME_DRIVER = config.get('robots', 'chrome_driver')
+        self.chrome_client = ChromClient(config=config, logger=logger)
 
     # 清空剪贴板
     def __clipboard_clean(self):
@@ -65,7 +66,7 @@ class ClipboardListen:
 
                     # 获取机器人参数
                     robot_params = str(clip_txt.replace(robot, '')).split(';')
-
+                    self.logger.debug(robot_params)
                     try:
                         # 机器人参数检查
                         if len(robot_params) == 0 or robot_params[0].strip() == '':
@@ -79,8 +80,9 @@ class ClipboardListen:
 
                         # 兼容旧版的chrom部分
                         elif robot_type == r'chrome':
-                            robot_script = self.wget_script('chrome')
-                            exec(robot_script, {'url': robot_params[0]})
+                            # robot_script = self.wget_script('chrome')
+                            # exec(robot_script, {'url': robot_params[0]})
+                            self.chrome_client.open_url(url=robot_params[0])
 
                         # 新版机器人调用
                         elif robot_type == r'iamrobot':
