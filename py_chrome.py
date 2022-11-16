@@ -19,23 +19,23 @@ class ChromClient:
         chrome_options.headless = False
 
         # 获取执行文件路径
-        executable_path = config.get('robots', 'chrome_driver')
-        service = Service(executable_path=executable_path)
-        chrome = webdriver.Chrome(options=chrome_options, service=service)
+        executable_path = self.config.get('robots', 'chrome_driver')
+        self.service = Service(executable_path=executable_path)  # , port=9222
+        self.chrome = webdriver.Chrome(
+            chrome_options=chrome_options, service=self.service)
+        self.logger.debug(url)
 
         # 打开url
-        url = r'http://www.sina.com.cn'
-        script_str = "window.open('%s','_self','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes,  resizable=no, copyhistory=yes, width=400, height=400')" % url
-        chrome.execute_script(script_str)
+        script_str = "window.open('%s','_self','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes,  resizable=no, copyhistory=yes, width=400, height=400') " % url
+        self.chrome.execute_script(script_str)
 
         # 关闭service
-        service.stop()
+        self.service.stop()
 
 
 if __name__ == '__main__':
-    # 初始化配置
+    #     # 初始化配置
     config = ConfigFactory(config_file='py_clipboard.ini').get_config()
     logger = LoggerFactory(config_factory=config).get_logger()
-
     chrome_client = ChromClient(config=config, logger=logger)
-    chrome_client.open_url('http://www.sina.com.cn')
+    chrome_client.open_url(url=r'https://www.sina.com.cn')

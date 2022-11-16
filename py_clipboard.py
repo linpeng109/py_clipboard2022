@@ -20,7 +20,8 @@ class ClipboardListen:
         self.ROBOTS = config.get('robots', 'keywords').split(';')
         self.ROBOT_URL = config.get('robots', 'robot_url')
         self.CHROME_DRIVER = config.get('robots', 'chrome_driver')
-        self.chrome_client = ChromClient(config=config, logger=logger)
+        self.chrome_client = ChromClient(
+            config=self.config, logger=self.logger)
 
     # 清空剪贴板
     def __clipboard_clean(self):
@@ -45,6 +46,9 @@ class ClipboardListen:
 
     # 监听剪贴板的变化
     def __listen(self):
+
+        # 清空剪贴板内容
+        self.__clipboard_clean()
 
         # 进入监听循环
         while True:
@@ -73,18 +77,17 @@ class ClipboardListen:
                             error = Exception('软件机器人参数缺失')
                             raise error
 
-                        # 兼容旧版的robot部分
+                            # 兼容旧版的robot部分
                         if robot_type == r'robot':
                             robot_script = self.wget_script(robot_params[0])
                             exec(robot_script)
 
-                        # 兼容旧版的chrom部分
+                            # 兼容旧版的chrom部分
                         elif robot_type == r'chrome':
-                            # robot_script = self.wget_script('chrome')
-                            # exec(robot_script, {'url': robot_params[0]})
+                            print('================================================')
                             self.chrome_client.open_url(url=robot_params[0])
 
-                        # 新版机器人调用
+                            # 新版机器人调用
                         elif robot_type == r'iamrobot':
                             robot_name = robot_params[0]
                             self.logger.debug('robot name: %s' % robot_name)
@@ -97,10 +100,10 @@ class ClipboardListen:
                     except Exception as error:
                         self.logger.error(error)
             # 延时0.2
-            time.sleep(0.2)
+            time.sleep(0.5)
 
     # 启动子线程调用监听器
-    def start(self):
+    def start_listener(self):
         self.logger.info("The clipboard listen is running....")
         t = Thread(target=self.__listen)
         t.start()
@@ -111,4 +114,4 @@ if __name__ == '__main__':
     logger = LoggerFactory(config_factory=config).get_logger()
 
     clipboard_listen = ClipboardListen(config=config, logger=logger)
-    clipboard_listen.start()
+    clipboard_listen.start_listener()
