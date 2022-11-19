@@ -9,9 +9,9 @@ import py_pyperclip
 from py_config import ConfigFactory
 from py_logging import LoggerFactory
 from py_chrome import ChromClient
+
+
 # 剪贴板监听器
-
-
 class ClipboardListen:
     # 初始化
     def __init__(self, config: ConfigFactory, logger: LoggerFactory):
@@ -84,7 +84,6 @@ class ClipboardListen:
 
                             # 兼容旧版的chrom部分
                         elif robot_type == r'chrome':
-                            print('================================================')
                             self.chrome_client.open_url(url=robot_params[0])
 
                             # 新版机器人调用

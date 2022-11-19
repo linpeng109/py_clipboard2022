@@ -4,12 +4,18 @@ from selenium.webdriver.chrome.service import Service
 from py_config import ConfigFactory
 from py_logging import LoggerFactory
 
+'''
+控制Chrome浏览器
+'''
+
 
 class ChromClient:
+    # 初始化
     def __init__(self, config, logger) -> None:
         self.config = config
         self.logger = logger
-
+    
+    # 打开指定网址
     def open_url(self, url: str):
         # chrome配置
         chrome_options = webdriver.ChromeOptions()
