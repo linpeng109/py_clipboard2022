@@ -40,7 +40,7 @@ class ChromClient:
 
 
 if __name__ == '__main__':
-    #     # 初始化配置
+    # 初始化配置
     config = ConfigFactory(config_file='py_clipboard.ini').get_config()
     logger = LoggerFactory(config_factory=config).get_logger()
     chrome_client = ChromClient(config=config, logger=logger)
