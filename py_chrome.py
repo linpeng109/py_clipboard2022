@@ -26,17 +26,17 @@ class ChromClient:
 
         # 获取执行文件路径
         executable_path = self.config.get('robots', 'chrome_driver')
-        self.service = Service(executable_path=executable_path)  # , port=9222
-        self.chrome = webdriver.Chrome(
-            chrome_options=chrome_options, service=self.service)
+        service = Service(executable_path=executable_path)  # , port=9222
+        chrome = webdriver.Chrome(
+            chrome_options=chrome_options, service=service)
         self.logger.debug(url)
 
         # 打开url
         script_str = "window.open('%s','_self','toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes,  resizable=no, copyhistory=yes, width=400, height=400') " % url
-        self.chrome.execute_script(script_str)
+        chrome.execute_script(script_str)
 
         # 关闭service
-        self.service.stop()
+        service.stop()
 
 
 if __name__ == '__main__':
