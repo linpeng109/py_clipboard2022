@@ -20,8 +20,8 @@ class ClipboardListen:
         self.ROBOTS = config.get('robots', 'keywords').split(';')
         self.ROBOT_URL = config.get('robots', 'robot_url')
         self.CHROME_DRIVER = config.get('robots', 'chrome_driver')
-        self.chrome_client = ChromClient(
-            config=self.config, logger=self.logger)
+        # self.chrome_client = ChromClient(
+        #     config=self.config, logger=self.logger)
 
     # 清空剪贴板
     def __clipboard_clean(self):
@@ -84,7 +84,9 @@ class ClipboardListen:
 
                         # 兼容旧版的chrom部分
                         elif robot_type == r'chrome':
-                            self.chrome_client.open_url(url=robot_params[0])
+                            chrome_client = ChromClient(
+                                config=self.config, logger=self.logger)
+                            chrome_client.open_url(url=robot_params[0])
 
                         # 新版机器人调用
                         elif robot_type == r'iamrobot':
