@@ -35,7 +35,7 @@ class ClipboardListen:
             script_json = res.json()
             if script_json is not None:
                 # base64解码
-                script_bytes = base64.b64decode(script_json['data'])
+                script_bytes = base64.b64decode(script_json['data'])  
                 script_string = script_bytes.decode('utf-8')
                 # self.logger.debug(script_string)
         except requests.exceptions.ConnectionError as error:
